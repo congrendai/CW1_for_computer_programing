@@ -28,12 +28,19 @@ class BinarySearchTree():
     def __init__(self):
         self.__root = None
         self.__size = 0
+        self.__count = 0
 
     def get_root(self):
         return self.__root
 
     def set_root(self, cargo):
         self.__root = TreeNode(cargo)
+
+    def get_count(self):
+        return self.__count
+
+    def set_count(self, value):
+        self.__count = value
 
     def get_size(self):
         return self.__size
@@ -42,13 +49,15 @@ class BinarySearchTree():
         self.__size = value
 
     def is_empty(self):
-        pass
+        if self.__count == 0: return True
+        else: return False
 
     def is_full(self):
-        pass
+        if self.__count == self.__size: return True
+        else: False
 
     def search(self, cargo):
-        pass
+        return self.search_node(self.__root, cargo)
 
     def search_node(self, current_node, cargo):
         if(current_node.get_cargo() is None):
@@ -63,10 +72,12 @@ class BinarySearchTree():
     def insert(self, cargo):
         if(self.get_root() is None):
             self.set_root(cargo)
-            self.set_size(self.get_size() + 1)
+            self.set_count(self.get_count() + 1)
         else:
-            self.insert_node(self.__root, cargo)
-            self.set_size(self.get_size() + 1)
+            if self.__count < self.__size:
+                self.insert_node(self.__root, cargo)
+                self.set_count(self.get_count() + 1)
+            else: print("The BST has reached its size ({}).".format(self.__size))
 
     def insert_node(self, current_node, cargo):
         if cargo <= current_node.get_cargo():
@@ -83,9 +94,18 @@ class BinarySearchTree():
     def delete(self, cargo):
         pass
 
+    def traverse(self):
+        pass
+
+    def print_tree(self):
+        pass
+
 if __name__ == '__main__':
     binary_search_tree = BinarySearchTree()
+    binary_search_tree.set_size(1)
     binary_search_tree.insert(10)
     binary_search_tree.insert(15)
-    # print(binary_search_tree.search(10))
-    print(binary_search_tree.get_size())
+    binary_search_tree.insert(20)
+    
+    print(binary_search_tree.get_count())
+    print(binary_search_tree.search(10))
