@@ -47,9 +47,9 @@ class LinkedList:
         linked_order_list = []
         temp = self.get_head()
         while temp:
-            linked_order_list.append(temp.get_cargo())
+            linked_order_list.append(str(temp.get_cargo()))
             temp = temp.get_next()
-        return linked_order_list
+        return ", ".join(linked_order_list)
     
     # This method append a value to the end of the linked list
     def insert(self, cargo):
@@ -65,6 +65,7 @@ class LinkedList:
                 self.set_length(self.get_length() + 1)
         else: print("The linked list has reached its size ({}).".format(self.__size))
     
+    # This piece of code is referenced from https://www.geeksforgeeks.org/linked-list-set-3-deleting-node/
     # This method deletes the first occurrence of the value from the list
     def delete(self, cargo):
         if self.get_length() == 0: print("The linked list is empty")
@@ -88,28 +89,28 @@ class LinkedList:
             prev.set_next(temp.get_next())
             self.set_length(self.get_length() - 1)
 
+    # This piece of code is referenced from https://www.geeksforgeeks.org/search-an-element-in-a-linked-list-iterative-and-recursive/
+    # It can search for a given value
     def search(self, cargo):
         if self.get_length() == 0: print("The linked list is empty")
         else:
             temp = self.get_head()
             while temp != None:
                 if temp.get_cargo() == cargo: return True
-                if temp.get_next() != None:
-                    temp.set_next(temp.get_next())
+                temp = temp.get_next()
             return False
 
 if __name__ == '__main__':
     linked_list = LinkedList()
-    linked_list.set_size(4)
+    linked_list.set_size(5)
     linked_list.insert(1)
-    linked_list.insert(2)
+    linked_list.insert(6)
     linked_list.insert(3)
     linked_list.insert(4)
+    linked_list.insert(5)
 
-    # linked_list.delete(2)
-    # linked_list.delete(4)
+    linked_list.delete(1)
+    linked_list.delete(4)
 
-    print(linked_list.search(3))
-
-    # print(linked_list.traverse())
-    # print(linked_list.get_length())
+    print(linked_list.search(4))
+    print(linked_list.traverse())
