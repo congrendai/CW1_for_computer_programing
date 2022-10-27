@@ -66,6 +66,7 @@ class BinarySearchTree():
             self.set_size(self.get_size() + 1)
         else:
             self.insert_node(self.__root, cargo)
+            self.set_size(self.get_size() + 1)
 
     def insert_node(self, current_node, cargo):
         if cargo <= current_node.get_cargo():
@@ -85,5 +86,6 @@ class BinarySearchTree():
 if __name__ == '__main__':
     binary_search_tree = BinarySearchTree()
     binary_search_tree.insert(10)
+    binary_search_tree.insert(15)
     # print(binary_search_tree.search(10))
     print(binary_search_tree.get_size())
