@@ -80,6 +80,7 @@ class BinarySearchTree():
             else: print("The BST has reached its size ({}).".format(self.__size))
 
     def insert_node(self, current_node, cargo):
+        # Duplicate values will be added to the left
         if cargo <= current_node.get_cargo():
             if current_node.get_left_child():
                 self.insert_node(current_node.get_left_child(), cargo)
@@ -102,10 +103,10 @@ class BinarySearchTree():
 
 if __name__ == '__main__':
     binary_search_tree = BinarySearchTree()
-    binary_search_tree.set_size(1)
+    binary_search_tree.set_size(6)
     binary_search_tree.insert(10)
     binary_search_tree.insert(15)
     binary_search_tree.insert(20)
-    
-    print(binary_search_tree.get_count())
-    print(binary_search_tree.search(10))
+    binary_search_tree.insert(30)
+    binary_search_tree.insert(12)
+    binary_search_tree.insert(22)

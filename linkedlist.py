@@ -1,133 +1,95 @@
 class Node:
-    def __init__(self, cargo=None, next=None):
-        self.cargo = cargo
-        self.next = next
+    def __init__(self, cargo = None, next = None):
+        self.__cargo = cargo
+        self.__next = next
 
     def __str__(self):
-        return str(self.cargo)
+        return str(self.__cargo)
 
+    def get_cargo(self):
+        return self.__cargo
+
+    def set_cargo(self, cargo):
+        self.__cargo = cargo
+
+    def get_next(self):
+        return self.__next
+
+    def set_next(self, node):
+        self.__next = node
 
 class LinkedList:
     def __init__(self) -> None:
-        self.head = Node()
-        self.length = 0
+        self.__head = Node()
+        self.__length = 0
+        self.__size = 0
 
-    def show(self, depth):
-        if self.length == 0:
-            print("The list is empty.")
+    def get_head(self):
+        return self.__head
 
-        else:
-            temp = self.head
-            if 0 <= depth <= self.length-1:
+    def set_head(self, node):
+        self.__head = node
 
-                if depth == 0:
-                    print("The linked list in {} depth:".format(depth))
-                    print(temp)
-                    print("\n")
+    def get_length(self):
+        return self.__length
 
-                else:
-                    print("The linked list in {} depth:".format(depth))
-                    print(temp)
-                    while True:
-                        temp = temp.next
-                        print(temp)
+    def set_length(self, value):
+        self.__length = value
 
-                        depth = depth -1
-                        if depth == 0:
-                            break
-                    print("\n")
+    def get_size(self):
+        return self.__size
 
-            else:
-                print("The depth is out of boundry.")
+    def set_size(self, value):
+        self.__size = value
 
-    def show_all(self):
-        temp = self.head
-        print("The linked list contains:")
+    # This method returns the values of the nodes in the linked order
+    def traverse(self):
+        linked_order_list = []
+        temp = self.get_head()
         while temp:
-            print(temp)
-            temp = temp.next
-                
-
-    def find_length(self):
-        print("The length of the linked list is:", self.length) 
-
-    def reverse(self):
-        pass
-
-    def add(self, cargo, index):
-
-        if 0 <= index <= self.length:
-            temp = self.head
+            linked_order_list.append(temp.get_cargo())
+            temp = temp.get_next()
+        return linked_order_list
+    
+    # This method append a value to the end of the linked list
+    def insert(self, cargo):
+        if self.get_length() < self.get_size():
             new_node = Node(cargo)
-
-            if index == 0:
-                
-                if temp.next != None:
-                    next_node = temp
-                    self.head = new_node
-                    new_node.next = next_node
-                    self.length = self.length + 1
-
-                else:
-                    self.head = new_node
-                    self.length = self.length + 1
-
+            temp = self.get_head()
+            if temp.get_cargo() == None:
+                temp.set_cargo(cargo)
+                self.set_length(self.get_length() + 1)
             else:
-                for _ in range(index-1):
-                    temp = temp.next
-
-                if temp.next != None:
-                    next_node = temp.next
-                    temp.next = new_node
-                    new_node.next = next_node
-                    self.length = self.length + 1
-
-                else:
-                    temp.next = new_node
-                    self.length = self.length + 1
-
+                while temp.get_next() != None: temp = temp.get_next()
+                temp.set_next(new_node)
+                self.set_length(self.get_length() + 1)
+        else: print("The linked list has reached its size ({}).".format(self.__size))
+    
+    # This method deletes the first occurrence of the value from the list
+    def delete(self, cargo):
+        if self.get_length() == 0: print("The linked list is empty")
         else:
-            print("Cannot add a node: the index is out of bountry")
-            
-    def remove(self, index):
-        temp = self.head
-        if 0 <= index < self.length:
-            if index == 0:
-                
-                if temp.next != None:
-                    self.head = self.head.next
-                    self.length = self.length - 1
+            temp = self.get_head()
+            while temp.get_cargo() != None:
+                if temp.get_cargo == cargo:
+                    temp. = temp.get_next()
+        if temp.get_cargo == value:
+            while temp.get_next():
+                next_node = temp.get_next()
+                self.set_length(self.get_length() - 1)
 
-                else:
-                    self.head = Node()
-                    self.length = 0
 
-            else:
-                for _ in range(index-1):
-                    temp = temp.next
-
-                if temp.next.next != None:
-                    next_node = temp.next.next
-                    temp.next = next_node
-                    self.length = self.length - 1
-
-                else:
-                    temp.next = None
-                    self.length = self.length - 1
-
-        else:
-            print("Cannot remove a node: the index is out of boundry.")
-
+    def search(self, value):
+        pass
 
 if __name__ == '__main__':
     linked_list = LinkedList()
+    linked_list.set_size(4)
+    linked_list.insert(1)
+    linked_list.insert(2)
+    linked_list.insert(3)
+    linked_list.insert(4)
 
-    linked_list.add("data1", 0)
-    linked_list.add("data2", 1)
-    linked_list.add("data3", 2)
-    linked_list.add("data4", 3)
+    # linked_list.delete(3)
 
-    linked_list.remove(3)
-
-    linked_list.show(2)
-    linked_list.show_all()
+    print(linked_list.traverse())

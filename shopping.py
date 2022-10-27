@@ -50,7 +50,7 @@ class ShoppingCart():
         product.quantity = quantity
 
 def get_value(product):
-    # get inputs from users and check the inputs. Then return a product with values
+    # Get inputs from users and check the inputs. Then return a product with values
     for key in vars(product).keys():
         if key == "price": 
             temp = "price (£)"
