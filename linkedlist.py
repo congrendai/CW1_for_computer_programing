@@ -70,17 +70,33 @@ class LinkedList:
         if self.get_length() == 0: print("The linked list is empty")
         else:
             temp = self.get_head()
-            while temp.get_cargo() != None:
-                if temp.get_cargo == cargo:
-                    temp. = temp.get_next()
-        if temp.get_cargo == value:
-            while temp.get_next():
-                next_node = temp.get_next()
-                self.set_length(self.get_length() - 1)
+            if temp != None:
+                if temp.get_cargo() == cargo:
+                    temp.set_cargo(None)
+                    self.set_length(self.get_length() - 1)
+                    if temp.get_next() != None: self.set_head(temp.get_next())
+                    else: print("The linked list is empty now.")
+    
+            while temp != None:
+                if temp.get_cargo() == cargo:
+                    break
+                prev = temp
+                temp = temp.get_next()
+    
+            if temp == None: return
 
+            prev.set_next(temp.get_next())
+            self.set_length(self.get_length() - 1)
 
-    def search(self, value):
-        pass
+    def search(self, cargo):
+        if self.get_length() == 0: print("The linked list is empty")
+        else:
+            temp = self.get_head()
+            while temp != None:
+                if temp.get_cargo() == cargo: return True
+                if temp.get_next() != None:
+                    temp.set_next(temp.get_next())
+            return False
 
 if __name__ == '__main__':
     linked_list = LinkedList()
@@ -90,6 +106,10 @@ if __name__ == '__main__':
     linked_list.insert(3)
     linked_list.insert(4)
 
-    # linked_list.delete(3)
+    # linked_list.delete(2)
+    # linked_list.delete(4)
 
-    print(linked_list.traverse())
+    print(linked_list.search(3))
+
+    # print(linked_list.traverse())
+    # print(linked_list.get_length())
