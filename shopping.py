@@ -53,24 +53,31 @@ class ShoppingCart():
 # Then, return a product with values
 def get_value(product):
     for key in vars(product).keys():
+
+        # Get price
         if key == "price": 
             temp = "price (£)"
             while True:
                 try:
+                    # Check if the input is a float
                     value = float(input("Insert its {}: ".format(temp)))
                     break
                 except: print("You should enter a float number.")
             setattr(product, key, value)
+        
+        # Get quantity and storage
         elif key == "quantity" or key == "storage": 
             while True:
                 try:
-                    # Check quantity cannot be 0
+                    # Check quantity cannot be 0 and if the input is a integer
                     value = int(input("Insert its {} (>=1): ".format(key)))
                     if value > 0:
                         break
                     else: print("The number cannot be 0!")
                 except: print("You should enter an integer number.")  
             setattr(product, key, value)
+
+        # Get unique_identifier
         elif key == "unique_identifier": 
             temp = "EAN code"
             while True:
@@ -89,6 +96,8 @@ def get_value(product):
                         break
                 # Check whether the EAN code is a digit sequence
                 except: print("EAN code should be a digit sequence")
+
+        # Get expiry_date
         # This checks whether the expiry date is older the today
         # and checks whether the format of date is valid
         elif key == "expiry_date":
@@ -96,7 +105,7 @@ def get_value(product):
             while True:
                 value = input("Insert its {} (dd/mm/yyyy): ".format(temp))
                 try:
-                    # Check whether the expiry date is older the today
+                    # Check whether the expiry date is older the today. If so, reenter the date
                     result = datetime.datetime.strptime(value, "%d/%m/%Y").date()
                     result = time.strptime(str(result), "%Y-%m-%d")
                     today = time.strptime(date.today().strftime("%d/%m/%Y"), "%d/%m/%Y")
@@ -105,6 +114,8 @@ def get_value(product):
                         break
                     else: print("Don't cling to the past!")
                 except: print("The date format is wrong.")
+        
+        # Get gluten_free and suitable_for_vegans
         # Check the food is gluten free and suitable for vegans
         elif key == "gluten_free" or key == "suitable_for_vegans": 
             while True:
@@ -119,6 +130,7 @@ def get_value(product):
                 else: print("Please enter Y or N.")         
             setattr(product, key, value)
         else:
+            # Check whether the input is empty for common attributes of products
             while True:
                 value = input("Insert its {}: ".format(key))
                 if value:
@@ -127,16 +139,17 @@ def get_value(product):
                 else: print("You havn't entered a value for {}".format(key))
     return product
 
-# Check the cart whether is empty and return the cart
+# Check the cart whether is empty. If it's not, and then return the cart
 def check_cart(shopping_cart):
     if shopping_cart: return shopping_cart
     else: print("The cart is empty.")
 
-# This method uses to print EAN code's summary
+# This method uses to print common attributes of products
 def basic_summary(dict):
     return "   {} - {} * {} = £{} \n      The EAN code is {}.".format(entry_num, dict["quantity"], dict["name"], dict["quantity"]*dict["price"], dict["unique_identifier"]), dict["quantity"]*dict["price"]
     
 if __name__ == '__main__':
+
     # Register for classes
     types = {
         "clothing": Clothing(), 
@@ -148,14 +161,17 @@ if __name__ == '__main__':
     shopping_cart = ShoppingCart()
     EAN_code = set()
 
-    # Start shopping
+    # Information about starting shopping
     print('The program has started.')
     print('Insert your next command (H for help):')
 
+    # Flag to stop the loop
     terminated = False
 
+    # Start looping
     while not terminated:
         c = input("Type your next command: ").lower()
+
         # This is for adding products
         if c == "a":
             type_input = input("Insert its type: ").lower()
@@ -166,6 +182,7 @@ if __name__ == '__main__':
                         product = value
                         shopping_cart.add_product(get_value(value))
             else: print("Please enter {}.".format(", ".join(types.keys())))
+
         # This is for deleting product by EAN code
         elif c == "r":
             cart = check_cart(shopping_cart.get_contents())
@@ -181,7 +198,8 @@ if __name__ == '__main__':
                                 break
                         break
                     else: print("This EAN code doesn't exist.")
-        # This is for priting the summary of the cart
+
+        # This is for printing the summary of the cart
         elif c == "s":
             cart = check_cart(shopping_cart.get_contents())
             if cart:
@@ -213,6 +231,7 @@ if __name__ == '__main__':
                         print("      This is made by {}.".format(dict["brand"]))
                         total += total_temp
                 print("   Total = £{}".format(total))
+
         # This is for changing quantity of a product by EAN code
         elif c == "q":
             cart = check_cart(shopping_cart.get_contents())
@@ -230,7 +249,8 @@ if __name__ == '__main__':
                 if vars(product)["unique_identifier"] == EAN:
                     shopping_cart.change_product_quantity(product, quantity)
                     print("The quantity changed to {}".format(quantity))
-        # This is for exporting cart to JSON format
+
+        # This is for print cart to JSON format
         elif c == "e":
             cart = check_cart(shopping_cart.get_contents())
             if cart:
@@ -239,7 +259,11 @@ if __name__ == '__main__':
                 for product in cart:
                     json_dict[product.name] = json.loads(product.to_json())
                 print(json.dumps(json_dict, indent = 4))
+        
+        # Quit the programme
         elif c == "t": terminated = True
+
+        # Show help
         elif c == "h":
             print("The program supports the following commands:")
             print("   [A] - Add a new product to the cart")

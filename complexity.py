@@ -95,6 +95,7 @@ if __name__ == '__main__':
     plt.legend(["BST", "Linked List", "Linear", "Logarithmic"])
     plt.xlabel('Size')
     plt.ylabel('Search time')
+    plt.title("Comparison between Average Time Spend and Estimate Time")
     plt.ticklabel_format(axis='both', style='sci', scilimits=(0,0))
     plt.show()
 

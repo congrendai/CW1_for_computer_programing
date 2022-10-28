@@ -9,6 +9,7 @@ class CountryMedals():
         self.bronze = bronze
         self.total = total
 
+    # Return JSON format string
     def to_json(self):
         return json.dumps(self.__dict__)
 
@@ -127,45 +128,59 @@ def get_country_instance(countries):
         country_instances.append(country_medals)
     return country_instances
 
-# Sort country name
+# Alphabetically sort country by name
 def get_sorted_list_of_country_names(countries):
     return sorted(countries.keys())
 
-# Print comparison between two teams
+# Print medals based on threshold and medal type, given more or fewer option
 def fewer_or_more(option):
     print("Given a medal type, lists all the countries that received {} medals than a threshold;".format(option))
     medal_type = read_medal_type()
-    threshod = read_positive_integer()
-    print("Countries that received {} than {} '{}' medals:\n".format(option,threshod,medal_type))
+    threshold = read_positive_integer()
+    print("Countries that received {} than {} '{}' medals:\n".format(option,threshold,medal_type))
     if option == "fewer":
+        # Sort the instances by medal type, ascending
         ascending = sort_countries_by_medal_type_ascending(country_instances, medal_type)
         for instance in ascending:
             medal_num = instance.get_medals(medal_type)
-            if medal_num < threshod: print(" - {} received {}".format(instance.name, medal_num))
+            if medal_num < threshold: print(" - {} received {}".format(instance.name, medal_num))
     elif option == "more":
+        # Sort the instances by medal type, descending
         descending = sort_countries_by_medal_type_descending(country_instances, medal_type)
         for instance in descending:
             medal_num = instance.get_medals(medal_type)
-            if medal_num > threshod: print(" - {} received {}".format(instance.name, medal_num))
+            if medal_num > threshold: print(" - {} received {}".format(instance.name, medal_num))
 
 if __name__ == '__main__':
     # Medals_dataset.csv should be in the same folder as the medals.py file
     file_name = "Medals_dataset.csv"
+
+    # Get countries dictionary
     countries = create_countries_dictionary(str2int(read_csv_to_list(file_name)))
+
+    # Get a list of country instances
     country_instances = get_country_instance(countries)
 
+    # Flag to stop the loop
     terminated = False
 
+    # Start looping
     while not terminated:
         c = input("Insert a command (Type 'H' for help): ").lower()
+        # Show sorted countries' names
         if c == "l":
             sorted_list_by_name = get_sorted_list_of_country_names(countries)
             print("The dataset contains {} countries: {}.".format(len(sorted_list_by_name),", ".join(sorted_list_by_name)))
+
+        # Show a summary about the number of gold, silver, bronze, and total for a country
         elif c == "s":
             country_name = read_country_name()
             for instance in country_instances:
                 if instance.name == country_name: instance.print_summary()
+
+        # Medal comparison
         elif c == "c":
+            # Get two countries to compare with
             print("Compare two countries")
             while True:
                 country_1 = read_country_name()
@@ -178,6 +193,7 @@ if __name__ == '__main__':
 
             print("\nMedals comparison between '{}' and '{}':".format(country_1, country_2))
 
+            # Compare the two countries
             compare_countries = []
             for instance in country_instances:
                 if instance.name == country_1:
@@ -186,12 +202,14 @@ if __name__ == '__main__':
                 if instance.name == country_2:
                     compare_countries.append(instance)
             compare_countries[0].compare(compare_countries[1])
+
+        # Call the function that use threshold and medal type to show comparison, given more or fewer condition
         elif c == "m":
             fewer_or_more("more")
         elif c == "f":
             fewer_or_more("fewer")
-        
-        # Export to JSON format, and it stores the same diractory as the medals.py
+
+        # Export to JSON format, and store the file to diractory where is the same as the medals.py
         elif c == "e":
             value = input("Enter the file name (.json): ")
 
@@ -199,12 +217,16 @@ if __name__ == '__main__':
             for instance in country_instances:
                 json_dict[instance.name] = json.loads(instance.to_json())
 
+            # The JSON file is saved in the same diractory as the medals.py file
             with open('{}.json'.format(value), 'w') as f:
                 json.dump(json_dict, f, indent = 4)
 
-            # The JSON file is saved in the same diractory as the medals.py file
             print("File '{}' correctly saved".format(value))
+
+        # Quit the programme
         elif c == "q": terminated = True
+
+        # Show help
         elif c == "h":
             print("\nList of commands:")
             print(" - (H)elp shows the list of comments;")
@@ -216,4 +238,5 @@ if __name__ == '__main__':
             print(" - (E)xport, save the medals table as '.json' file")
             print(" - (Q)uit.")
         else: print("Command not recognised. Please try again.")
+
     print('Goodbye.')
