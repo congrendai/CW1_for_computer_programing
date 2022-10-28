@@ -12,6 +12,7 @@ class CountryMedals():
     def to_json(self):
         return json.dumps(self.__dict__)
 
+    # Get the number of medals by medal type
     def get_medals(self, medal_type):
         if medal_type.lower() == "gold":
             return self.gold
@@ -23,9 +24,11 @@ class CountryMedals():
             return self.total
         else: return None
 
+    # Print a summary for a team
     def print_summary(self):
         print("{} received {} medals in total; {} gold, {} silver, and {} bronze.".format(self.name, self.total, self.gold, self.silver, self.bronze)) 
 
+    # Used for comparing two teams by numbers of gold, silver, bronze, total
     def compare(self, country_2):
         for medal_type in ["gold", "silver", "bronze", "total"]:
             temp_1 = self.get_medals(medal_type)
@@ -34,18 +37,21 @@ class CountryMedals():
             elif temp_1 < temp_2: print("- {} received {} {} medal(s), {} less than {}, which reveived {} of them.".format(self.name, temp_1, medal_type, temp_2 - temp_1, country_2.name, temp_2))
             elif temp_1 == temp_2: print("- Both {} and {} received {} {} medal(s).".format(self.name, country_2.name, temp_1, medal_type))
 
+# Sort instances ascending oeder
 def sort_countries_by_medal_type_ascending(country_instances, medal_type):
     if medal_type == "gold": return sorted(country_instances, key = lambda x: x.gold)
     elif medal_type == "silver": return sorted(country_instances, key = lambda x: x.silver)
     elif medal_type == "bronze": return sorted(country_instances, key = lambda x: x.bronze)
     elif medal_type == "total": return sorted(country_instances, key = lambda x: x.total)
 
+# Sort instances descending oeder
 def sort_countries_by_medal_type_descending(country_instances, medal_type):
     if medal_type == "gold": return sorted(country_instances, key = lambda x: x.gold, reverse = True)
     elif medal_type == "silver": return sorted(country_instances, key = lambda x: x.silver, reverse = True)
     elif medal_type == "bronze": return sorted(country_instances, key = lambda x: x.bronze, reverse = True)
     elif medal_type == "total": return sorted(country_instances, key = lambda x: x.total, reverse = True)
 
+# Used for entering the threshold, and check input whether is input >= 0
 def read_positive_integer():
     while True:
         try:
@@ -55,13 +61,15 @@ def read_positive_integer():
         except: print("It isn't an integer.")
     return value
 
+# Return all the countries' name
 def read_country_name():
     while True:
         value = input(">> Insert a country name ('q' for quit): ").lower()
         for key in countries.keys():
             if value == key.lower(): return key
         else: print("The options of countries are: \n{}".format("\n".join(countries.keys())))
-        
+
+# Return a medal type
 def read_medal_type():
     while True:
         value = input("Enter a medal type (gold, silver, bronze, or total): ").lower()
@@ -69,6 +77,7 @@ def read_medal_type():
         else: print("The medal type doesn't exist.")
     return value
 
+# Read the csv file, and change it to a Python dictionary
 def read_csv_to_list(file_name):
     with open(file_name, encoding = 'utf-8-sig') as f:
         reader = csv.reader(f)
@@ -81,6 +90,7 @@ def read_csv_to_list(file_name):
             else: headers[index] = headers[index].lower()
         return [dict(zip(headers, row)) for row in reader]
 
+# Change the "string" number to integer
 def str2int(country_list):
     for country in country_list:
         country["rank"] = int(country["rank"])
@@ -91,12 +101,14 @@ def str2int(country_list):
         country["rank_by_total"] = int(country["rank_by_total"])
     return country_list
 
+# Return the countries dictionary
 def create_countries_dictionary(unsorted_list_country):
     countries = {}
     for country in unsorted_list_country:
         countries[country["name"]] = country
     return countries
 
+# Return a dictionary of ling dictionary
 def get_country_instance(countries):
     country_instances = []
     for country in countries.values():
@@ -115,9 +127,11 @@ def get_country_instance(countries):
         country_instances.append(country_medals)
     return country_instances
 
+# Sort country name
 def get_sorted_list_of_country_names(countries):
     return sorted(countries.keys())
 
+# Print comparison between two teams
 def fewer_or_more(option):
     print("Given a medal type, lists all the countries that received {} medals than a threshold;".format(option))
     medal_type = read_medal_type()
@@ -176,6 +190,8 @@ if __name__ == '__main__':
             fewer_or_more("more")
         elif c == "f":
             fewer_or_more("fewer")
+        
+        # Export to JSON format, and it stores the same diractory as the medals.py
         elif c == "e":
             value = input("Enter the file name (.json): ")
 
