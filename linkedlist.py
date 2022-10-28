@@ -42,6 +42,16 @@ class LinkedList:
     def set_size(self, value):
         self.__size = value
 
+    # This method checks whether linked list is empty
+    def is_empty(self):
+        if self.__length == 0: return True
+        else: return False
+
+    # This method checks whether linked list is full
+    def is_full(self):
+        if self.__length == self.__size: return True
+        else: False
+
     # This method returns the values of the nodes in the linked order
     def traverse(self):
         linked_order_list = []
@@ -53,7 +63,7 @@ class LinkedList:
     
     # This method append a value to the end of the linked list
     def insert(self, cargo):
-        if self.get_length() < self.get_size():
+        if not self.is_full():
             new_node = Node(cargo)
             temp = self.get_head()
             if temp.get_cargo() == None:

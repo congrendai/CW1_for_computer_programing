@@ -1,4 +1,5 @@
-# Some ideas of implementing Binary Search Trss are from https://gist.github.com/jakemmarsh/8273963
+# Some ideas of implementing Binary Search Trss are from https://gist.github.com/jakemmarsh/8273963, 
+# including search(), search_node(), insert(), insert_node()
 class TreeNode():
     def __init__(self, cargo = None):
         self.__cargo = cargo
@@ -22,6 +23,45 @@ class TreeNode():
 
     def set_right_child(self, node):
         self.__right_child = node
+
+    # Referenced from https://github.com/pagekeytech/education/blob/master/BST/bst.py
+    def traverse(self, l):
+        if self.get_left_child():
+            self.get_left_child().traverse(l)
+        l.append(self.get_cargo())
+        if self.get_right_child():
+            self.get_right_child().traverse(l)
+        return l
+
+    # Referenced from https://stackoverflow.com/questions/62406562/how-to-print-a-binary-search-tree-in-python
+    def __repr__(self):
+        lines = []
+        if self.get_right_child():
+            found = False
+            for line in repr(self.get_right_child()).split("\n"):
+                if line[0] != " ":
+                    found = True
+                    line = " ┌─" + line
+                elif found:
+                    line = " | " + line
+                else:
+                    line = "   " + line
+                lines.append(line)
+
+        lines.append(str(self.get_cargo()))
+        if self.get_left_child():
+            found = False
+            for line in repr(self.get_left_child()).split("\n"):
+                if line[0] != " ":
+                    found = True
+                    line = " └─" + line
+                elif found:
+                    line = "   " + line
+                else:
+                    line = " | " + line
+                lines.append(line)
+        return "\n".join(lines)
+
 
 class BinarySearchTree():
     def __init__(self):
@@ -79,7 +119,7 @@ class BinarySearchTree():
             self.set_root(cargo)
             self.set_count(self.get_count() + 1)
         else:
-            if self.__count < self.__size:
+            if not self.is_full():
                 self.insert_node(self.__root, cargo)
                 self.set_count(self.get_count() + 1)
             else: print("The BST has reached its size ({}).".format(self.__size))
@@ -98,22 +138,122 @@ class BinarySearchTree():
             else:
                 current_node.set_right_child(TreeNode(cargo))
 
-    def delete(self, cargo):
-        pass
+    # Referenced from https://github.com/pagekeytech/education/blob/master/BST/bst.py
+    def delete(self, d):
+        # Case 1: Empty Tree?
+        if self.get_root() == None:
+            return False
+            
+        # Case 2: Deleting root node
+        if self.get_root().get_cargo() == d:
+            # Case 2.1: Root node has no children
+            if self.get_root().get_left_child() is None and self.get_root().get_right_child() is None:
+                self.set_root(None)
+                return True
+            # Case 2.2: Root node has left child
+            elif self.get_root().get_left_child() and self.get_root().get_right_child() is None:
+                self.set_root(self.get_root().get_left_child())
+                return True
+            # Case 2.3: Root node has right child
+            elif self.root.left is None and self.root.right:
+                self.root = self.root.right
+                return True
+            # Case 2.4: Root node has two children
+            else:
+                moveNode = self.root.right
+                moveNodeParent = None
+                while moveNode.left:
+                    moveNodeParent = moveNode
+                    moveNode = moveNode.left
+                self.root.data = moveNode.data
+                if moveNode.data < moveNodeParent.data:
+                    moveNodeParent.left = None
+                else:
+                    moveNodeParent.right = None
+                return True		
+        # Find node to remove
+        parent = None
+        node = self.root
+        while node and node.data != d:
+            parent = node
+            if d < node.data:
+                node = node.left
+            elif d > node.data:
+                node = node.right
+        # Case 3: Node not found
+        if node == None or node.data != d:
+            return False
+        # Case 4: Node has no children
+        elif node.left is None and node.right is None:
+            if d < parent.data:
+                parent.left = None
+            else:
+                parent.right = None
+            return True
+        # Case 5: Node has left child only
+        elif node.left and node.right is None:
+            if d < parent.data:
+                parent.left = node.left
+            else:
+                parent.right = node.left
+            return True
+        # Case 6: Node has right child only
+        elif node.left is None and node.right:
+            if d < parent.data:
+                parent.left = node.right
+            else:
+                parent.right = node.right
+            return True
+        # Case 7: Node has left and right child
+        else:
+            moveNodeParent = node
+            moveNode = node.right
+            while moveNode.left:
+                moveNodeParent = moveNode
+                moveNode = moveNode.left
+            node.data = moveNode.data
+            if moveNode.right:
+                if moveNode.data < moveNodeParent.data:
+                    moveNodeParent.left = moveNode.right
+                else:
+                    moveNodeParent.right = moveNode.right
+            else:
+                if moveNode.data < moveNodeParent.data:
+                    moveNodeParent.left = None
+                else:
+                    moveNodeParent.right = None
+            return True
 
+    # Referenced from https://github.com/pagekeytech/education/blob/master/BST/bst.py
     def traverse(self):
-        pass
+        if self.get_root(): return self.get_root().traverse([])
+        else: return []
 
+    # Referenced from https://stackoverflow.com/questions/62406562/how-to-print-a-binary-search-tree-in-python
     def print_tree(self):
-        pass
+        print(self.__root)
 
 if __name__ == '__main__':
     binary_search_tree = BinarySearchTree()
-    binary_search_tree.set_size(6)
-    binary_search_tree.insert(10)
-    binary_search_tree.insert(15)
-    binary_search_tree.insert(20)
+    binary_search_tree.set_size(100)
+
+    # insert nodes
+    binary_search_tree.insert(100)
+    binary_search_tree.insert(50)
+    binary_search_tree.insert(112)
     binary_search_tree.insert(30)
-    binary_search_tree.insert(12)
-    binary_search_tree.insert(22)
+    binary_search_tree.insert(100)
+    binary_search_tree.insert(60)
+    binary_search_tree.insert(130)
+    binary_search_tree.insert(127)
+    binary_search_tree.insert(1)
+
+    # Search a node that has value of 20
     print(binary_search_tree.search(20))
+
+    # Traverse the BST
+    traverse = binary_search_tree.traverse()
+    print(*traverse)
+
+    # Look the tree graph from the left (that's the root)
+    binary_search_tree.print_tree()

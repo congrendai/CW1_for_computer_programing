@@ -5,24 +5,25 @@ import matplotlib.pyplot as plt
 from linkedlist import LinkedList
 from binarysearchtree import BinarySearchTree
 
+# This method generates a BST and a Linked List with n random integer
+def random_tree_list(n):
+    binary_search_tree = BinarySearchTree()
+    binary_search_tree.set_size(n)
+    linked_list = LinkedList()
+    linked_list.set_size(n)
+    for _ in range(n):
+        i = randint(1,1000)
+        binary_search_tree.insert(i)
+        linked_list.insert(i)
+    return binary_search_tree, linked_list
+
+# split lists by step
+def divide_lists(list, step):
+    for i in range(0, len(list), step):
+        yield list[i:i + step]
+
 if __name__ == '__main__':
     binary_search_tree = BinarySearchTree()
-
-    # This method generates a BST and a Linked List with n random integer
-    def random_tree_list(n):
-        binary_search_tree = BinarySearchTree()
-        binary_search_tree.set_size(n)
-        linked_list = LinkedList()
-        linked_list.set_size(n)
-        for _ in range(n):
-            i = randint(1,1000)
-            binary_search_tree.insert(i)
-            linked_list.insert(i)
-        return binary_search_tree, linked_list
-
-    def divide_lists(list, n):
-        for i in range(0, len(list), n):
-            yield list[i:i + n]
 
     equally_spaced_numbers = [i for i in range(5,105,5)]
     time_spent_by_tree = []
@@ -59,10 +60,11 @@ if __name__ == '__main__':
     print(average_time_spent_by_list)
     
     # Calculate c and b for a linear relationship
-    # average_time_spent_by_list[0] = 5 * c + b
+    # t = c * n + b
+    # average_time_spent_by_list[0] = 5 * c + b ===> 2 * average_time_spent_by_list[0] = 10 * c + 2b
     # average_time_spent_by_list[1] = 10 * c + b
-    c = (average_time_spent_by_list[1] - average_time_spent_by_list[0]) / 5
-    b = average_time_spent_by_list[0] - 5 * c
+    b = 2 * average_time_spent_by_list[0] - average_time_spent_by_list[1]
+    c = (average_time_spent_by_list[1] - b) / 10
     estimate_time_for_linear_relationship = []
     for number in equally_spaced_numbers:
         estimate_time_for_linear_relationship.append((number * c + b))
@@ -81,7 +83,7 @@ if __name__ == '__main__':
 
     # Plot equally spaced size of BSTs and Linked Lists vs average time spent by them
     fig, axs = plt.subplots(1, 2, sharey = True)
-    fig.suptitle('Equally Spaced Size Numbers VS Average Time Spent')
+    fig.suptitle('Average Time Spent by BST and Linked List')
     axs[0].plot(equally_spaced_numbers, average_time_spent_by_tree)
     axs[0].set_title("BST")
     axs[0].set_xlabel("Size of tree")
@@ -97,9 +99,8 @@ if __name__ == '__main__':
     For a better comparison, I put these two graph into one that is shared with y-axis. 
     The graph shows that the time of searching values by a BST approaches a logarithmic time, 
     while that of the Linked List approaches a positive linear time (as the size increases, the 
-    search time increases as well). Although the graph of the Linked List is volatile, it still 
-    shows that there is a linear relationship between x and y-axis of the Linked List. Additionally, 
-    the time spent on searching values of a BST is way less than that of a Linked List.
+    search time increases as well). Additionally, the time spent on searching values of a BST is 
+    way less than that of a Linked List if the size of BST and Linked List increases.
     '''
 
     # Plot equally spaced size of BST and Linked List with average time spend, estimate time for linear and logarithmic relationship
@@ -116,17 +117,10 @@ if __name__ == '__main__':
 
 
     '''
-    Complexity analysis X vs Y, Y2 and Y3
+    Complexity analysis X vs Y, Y2, Y3, and Y4
 
-    Since I change the size n to 5 - 1000 spaced by 5, I also change the values 
-    to calculate c and b for BST and Linked List. This is because if the two 
-    selected times for calculating c and b are too close, the estimated graph 
-    cannot fit the average time spent for searching well, which might be the reason 
-    that, in most scenarios (I ran several times to see how the graphs change), 
-    estimated graph cannot fit the real case perfectly, but the estimated graph 
-    for BST fit well since BST uses way less to search, compared to Linked list.
-    The estimated Graph for Linked List varies dramatically, which fits real time 
-    spent sometimes. Also, I think did not bad for implementing BST and Linked List 
-    due to what shows on the graph. If I have more time, I think I would make the BSTs 
-    and Linked List classes more efficient by improving the search() function.
+    The estimated graph fits the average time spent by BST and Linked list for searching values well, 
+    in most scenarios (I ran several times to see how the graphs change), which means I did not bad 
+    for implementing BST and Linked List due to what shows on the graph. If I have more time, I think 
+    I would make the BSTs and Linked List classes more efficient by improving the search() function.
     '''
