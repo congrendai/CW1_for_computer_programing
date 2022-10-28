@@ -55,7 +55,7 @@ class ShoppingCart():
 def get_value(product):
     for key in vars(product).keys():
 
-        # Get price
+        # Get price and check if it is a float number
         if key == "price": 
             temp = "price (£)"
             while True:
@@ -66,7 +66,7 @@ def get_value(product):
                 except: print("You should enter a float number.")
             setattr(product, key, value)
         
-        # Get quantity and storage
+        # Get quantity and storage and check if it is an integer and greater than 0
         elif key == "quantity" or key == "storage": 
             while True:
                 try:
@@ -78,7 +78,8 @@ def get_value(product):
                 except: print("You should enter an integer number.")  
             setattr(product, key, value)
 
-        # Get unique_identifier
+        # Get unique_identifier and check if it is an digit sequamce string, 
+        # a 13-digits sequence, uniqueness
         elif key == "unique_identifier": 
             temp = "EAN code"
             while True:
@@ -184,6 +185,7 @@ if __name__ == '__main__':
                     if type_input == key:
                         product = value
                         shopping_cart.add_product(get_value(value))
+                        print("The () has been added to the cart.".format(product.name))
             else: print("Please enter {}.".format(", ".join(types.keys())))
 
         # This is for deleting product by EAN code from the cart

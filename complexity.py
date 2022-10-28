@@ -140,10 +140,10 @@ if __name__ == '__main__':
     The graph shows that the time of searching values by a BST and estimated time for a linear time 
     and a logarithmic time, which fits well with the estimated logarithmic time, based on the initial
     graph. However, the real averaged time spent by BST is not exacly the same as the estimated one.
-    This happens may because the BSTs are not balanced where the line does not fit the estimated one.
-    If all the BSTs with random numbers that are balanced, it might fit the estimated one precisely.
-    Although they are not the same, the real time spent on searching by BSTs approaches the estimated 
-    one, which means that the implementation of BST is quiet good.
+    This happens may because the BSTs are not balanced which is caused by randomness of integers that
+    we generate. If all the BSTs with random numbers that are balanced, it might fit the estimated one 
+    precisely. Although they are not the same, the real time spent on searching by BSTs approaches the 
+    estimated one, which means that the implementation of BST is quiet good.
 
     -----------------------------------------------------------------------------------------------
 

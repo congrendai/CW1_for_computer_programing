@@ -15,14 +15,10 @@ class CountryMedals():
 
     # Get the number of medals by medal type
     def get_medals(self, medal_type):
-        if medal_type.lower() == "gold":
-            return self.gold
-        elif medal_type.lower() == "silver":
-            return self.silver
-        elif medal_type.lower() == "bronze":
-            return self.bronze
-        elif medal_type.lower() == "total":
-            return self.total
+        if medal_type.lower() == "gold": return self.gold
+        elif medal_type.lower() == "silver": return self.silver
+        elif medal_type.lower() == "bronze": return self.bronze
+        elif medal_type.lower() == "total": return self.total
         else: return None
 
     # Print a summary for a team
