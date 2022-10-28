@@ -20,32 +20,49 @@ if __name__ == '__main__':
             linked_list.insert(i)
         return binary_search_tree, linked_list
 
-    equally_spaced_numbers = [i for i in range(5,1005,5)]
-    average_time_spent_by_tree = []
-    average_time_spent_by_list = []    
+    def divide_lists(list, n):
+        for i in range(0, len(list), n):
+            yield list[i:i + n]
+
+    equally_spaced_numbers = [i for i in range(5,105,5)]
+    time_spent_by_tree = []
+    time_spent_by_list = []    
     
     # Store the average time spent by list
     for number in equally_spaced_numbers:
-        binary_search_tree, linked_list = random_tree_list(number)
+        for i in range(1000):
+            binary_search_tree, linked_list = random_tree_list(number)
 
-        # Search 42 by the binary search tree
-        start_time_for_BST = time.time()
-        binary_search_tree.search(42)
-        elapsed_time_for_BST = time.time() - start_time_for_BST
-        average_time_spent_by_tree.append(elapsed_time_for_BST)
+            # Search 42 by the binary search tree
+            start_time_for_BST = time.time()
+            binary_search_tree.search(42)
+            elapsed_time_for_BST = time.time() - start_time_for_BST
+            time_spent_by_tree.append(elapsed_time_for_BST)
 
-        # Search 42 by the linked list
-        start_time_for_list = time.time()
-        linked_list.search(42)
-        elapsed_time_for_list = time.time() - start_time_for_list
-        average_time_spent_by_list.append(elapsed_time_for_list)
+            # Search 42 by the linked list
+            start_time_for_list = time.time()
+            linked_list.search(42)
+            elapsed_time_for_list = time.time() - start_time_for_list
+            time_spent_by_list.append(elapsed_time_for_list)
 
+    temp_tree = divide_lists(time_spent_by_tree, 1000)
+    average_time_spent_by_tree = []
+    for t in temp_tree:
+        average_time_spent_by_tree.append(sum(t) / len(t))
+
+    temp_list = divide_lists(time_spent_by_list, 1000)
+    average_time_spent_by_list = []
+    for t in temp_list:
+        average_time_spent_by_list.append(sum(t) / len(t))
+
+    print(average_time_spent_by_tree)
+    print(average_time_spent_by_list)
     
     # Calculate c and b for a linear relationship
     # average_time_spent_by_list[0] = 5 * c + b
     # average_time_spent_by_list[1] = 10 * c + b
-    c = (average_time_spent_by_list[9] - average_time_spent_by_list[0]) / 45
-    b = average_time_spent_by_list[0] - 45 * c
+    c = (average_time_spent_by_list[1] - average_time_spent_by_list[0]) / 5
+    b = average_time_spent_by_list[0] - 5 * c
     estimate_time_for_linear_relationship = []
     for number in equally_spaced_numbers:
         estimate_time_for_linear_relationship.append((number * c + b))
@@ -55,7 +72,7 @@ if __name__ == '__main__':
     # t = clog(n)+b
     # average_time_spent_by_tree[0] = c * math.log2(5) + b
     # average_time_spent_by_tree[1] = c * math.log2(10) + b
-    c = (average_time_spent_by_tree[9] - average_time_spent_by_tree[0]) / (math.log2(50) - math.log2(5))
+    c = (average_time_spent_by_tree[1] - average_time_spent_by_tree[0]) / (math.log2(10) - math.log2(5))
     b = average_time_spent_by_tree[0] - c * math.log2(5)
     estimate_time_for_logarithmic_relationship = []
     for number in equally_spaced_numbers:
@@ -77,14 +94,12 @@ if __name__ == '__main__':
     '''
     Complexity analysis X vs Y
 
-    For a better comparison, I change the size n to 5 - 1000 spaced by 5, and put 
-    these two graph into one that is shared with y-axis. The graph shows that the 
-    time of searching values by a BST approaches a logarithmic time, while that of 
-    the Linked List approaches a positive linear time (as the size increases, the 
-    search time increases as well). Although the graph of the Linked List is 
-    volatile, it still shows that there is a linear relationship between x and y
-    -axis of the Linked List. Additionally, the time spent on searching values of
-    a BST is way less than that of a Linked List.
+    For a better comparison, I put these two graph into one that is shared with y-axis. 
+    The graph shows that the time of searching values by a BST approaches a logarithmic time, 
+    while that of the Linked List approaches a positive linear time (as the size increases, the 
+    search time increases as well). Although the graph of the Linked List is volatile, it still 
+    shows that there is a linear relationship between x and y-axis of the Linked List. Additionally, 
+    the time spent on searching values of a BST is way less than that of a Linked List.
     '''
 
     # Plot equally spaced size of BST and Linked List with average time spend, estimate time for linear and logarithmic relationship
