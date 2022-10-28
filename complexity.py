@@ -24,7 +24,7 @@ def divide_lists(list, step):
 
 if __name__ == '__main__':
     # Set the number of simulations
-    number_tree = 1000
+    number_of_tree = 1000
 
     # Set the number of nodes in the BST and the Linked List
     search_number = 42
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     
     # Store the average time spent by list
     for number in equally_spaced_numbers:
-        for i in range(number_tree):
+        for _ in range(number_of_tree):
             binary_search_tree, linked_list = random_tree_list(number)
 
             # Search values by the binary search tree
@@ -57,12 +57,12 @@ if __name__ == '__main__':
             time_spent_by_list.append(elapsed_time_for_list)
 
     # Calculate the average time spent by BST
-    temp_tree = divide_lists(time_spent_by_tree, number_tree)
+    temp_tree = divide_lists(time_spent_by_tree, number_of_tree)
     average_time_spent_by_tree = []
     for t in temp_tree: average_time_spent_by_tree.append(sum(t) / len(t))
 
     # Calculate the average time spent by Linked List
-    temp_list = divide_lists(time_spent_by_list, number_tree)
+    temp_list = divide_lists(time_spent_by_list, number_of_tree)
     average_time_spent_by_list = []
     for t in temp_list: average_time_spent_by_list.append(sum(t) / len(t))
     
@@ -131,7 +131,7 @@ if __name__ == '__main__':
     while that of the Linked List approaches a positive linear time (as the size increases, the 
     search time increases as well). Additionally, the average time spent on searching values of 
     a BST is way less than that of a Linked List if the size of BST and Linked List increases to 
-    a quiet large number, say, 1000. 
+    a quiet large number, say, 100. 
 
     -----------------------------------------------------------------------------------------------
 
