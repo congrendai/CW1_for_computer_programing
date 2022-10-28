@@ -60,7 +60,7 @@ class BinarySearchTree():
         return self.search_node(self.__root, cargo)
 
     def search_node(self, current_node, cargo):
-        if(current_node.get_cargo() is None):
+        if(current_node is None):
             return False
         elif(cargo == current_node.get_cargo()):
             return True
