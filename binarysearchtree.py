@@ -1,5 +1,8 @@
 # Some ideas of implementing Binary Search Trss are from https://gist.github.com/jakemmarsh/8273963, 
 # including search(), search_node(), insert(), insert_node()
+from requests import delete
+
+
 class TreeNode():
     def __init__(self, cargo = None):
         self.__cargo = cargo
@@ -141,87 +144,87 @@ class BinarySearchTree():
     # Referenced from https://github.com/pagekeytech/education/blob/master/BST/bst.py
     def delete(self, d):
         # Case 1: Empty Tree?
-        if self.get_root() == None:
+        if self.__root == None:
             return False
             
         # Case 2: Deleting root node
-        if self.get_root().get_cargo() == d:
+        if self.__root.get_cargo() == d:
             # Case 2.1: Root node has no children
-            if self.get_root().get_left_child() is None and self.get_root().get_right_child() is None:
+            if self.__root.get_left_child() is None and self.__root.get_right_child() is None:
                 self.set_root(None)
                 return True
             # Case 2.2: Root node has left child
-            elif self.get_root().get_left_child() and self.get_root().get_right_child() is None:
-                self.set_root(self.get_root().get_left_child())
+            elif self.__root.get_left_child() and self.__root.get_right_child() is None:
+                self.__root = self.__root.get_left_child()
                 return True
             # Case 2.3: Root node has right child
-            elif self.root.left is None and self.root.right:
-                self.root = self.root.right
+            elif self.__root.get_left_child() is None and self.__root.get_right_child():
+                self.__root = self.__root().get_right_child()
                 return True
             # Case 2.4: Root node has two children
             else:
-                moveNode = self.root.right
+                moveNode = self.__root.get_left_child()
                 moveNodeParent = None
-                while moveNode.left:
+                while moveNode.get_left_child():
                     moveNodeParent = moveNode
-                    moveNode = moveNode.left
-                self.root.data = moveNode.data
-                if moveNode.data < moveNodeParent.data:
-                    moveNodeParent.left = None
+                    moveNode = moveNode.get_left_child()
+                self.__root = moveNode.get_cargo()
+                if moveNode.get_cargo() < moveNodeParent.get_cargo():
+                    moveNodeParent.set_left_child(None)
                 else:
-                    moveNodeParent.right = None
+                    moveNodeParent.__right_child =None
                 return True		
         # Find node to remove
         parent = None
-        node = self.root
-        while node and node.data != d:
+        node = self.__root
+        while node and node.get_cargo() != d:
             parent = node
-            if d < node.data:
-                node = node.left
-            elif d > node.data:
-                node = node.right
+            if d < node.get_cargo():
+                node = node.get_left_child()
+            elif d > node.get_cargo():
+                node = node.get_right_child()
         # Case 3: Node not found
-        if node == None or node.data != d:
+        if node == None or node.get_cargo() != d:
             return False
         # Case 4: Node has no children
-        elif node.left is None and node.right is None:
-            if d < parent.data:
-                parent.left = None
+        elif node.get_left_child() is None and node.get_right_child() is None:
+            if d < parent.get_cargo():
+                parent.set_left_child(None)
             else:
-                parent.right = None
+                parent.set_right_child(None)
             return True
         # Case 5: Node has left child only
-        elif node.left and node.right is None:
-            if d < parent.data:
-                parent.left = node.left
+        elif node.get_left_child() and node.get_right_child() is None:
+            if d < parent.get_cargo():
+                parent.set_left_child(node.get_left_child())
             else:
-                parent.right = node.left
+                parent.set_right_child(node.get_left_child())
             return True
         # Case 6: Node has right child only
-        elif node.left is None and node.right:
-            if d < parent.data:
-                parent.left = node.right
+        elif node.get_left_child() is None and node.get_right_child():
+            if d < parent.get_cargo():
+                parent.set_left_child(node.get_right_child())
             else:
-                parent.right = node.right
+                parent.set_right_child(node.get_right_child())
             return True
         # Case 7: Node has left and right child
         else:
             moveNodeParent = node
-            moveNode = node.right
-            while moveNode.left:
+            moveNode = node.get_right_child()
+            while moveNode.get_left_child():
                 moveNodeParent = moveNode
-                moveNode = moveNode.left
-            node.data = moveNode.data
-            if moveNode.right:
-                if moveNode.data < moveNodeParent.data:
-                    moveNodeParent.left = moveNode.right
+                moveNode = moveNode.get_left_child()
+            node.set_cargo(moveNode.get_cargo())
+            if moveNode.get_right_child():
+                if moveNode.get_cargo() < moveNodeParent.get_cargo():
+                    moveNodeParent.set_left_child(moveNode.get_right_child())
                 else:
-                    moveNodeParent.right = moveNode.right
+                    moveNodeParent.set_right_child(moveNode.get_right_child())
             else:
-                if moveNode.data < moveNodeParent.data:
-                    moveNodeParent.left = None
+                if moveNode.get_cargo() < moveNodeParent.get_cargo():
+                    moveNodeParent.set_left_child(None)
                 else:
-                    moveNodeParent.right = None
+                    moveNodeParent.set_right_child(None)
             return True
 
     # Referenced from https://github.com/pagekeytech/education/blob/master/BST/bst.py
@@ -248,10 +251,15 @@ if __name__ == '__main__':
     binary_search_tree.insert(127)
     binary_search_tree.insert(1)
 
-    # Search a node that has value of 20
+    # Search nodes
     print(binary_search_tree.search(20))
 
     # Traverse the BST
+    traverse = binary_search_tree.traverse()
+    print(*traverse)
+
+    # Delete nodes
+    binary_search_tree.delete(127)
     traverse = binary_search_tree.traverse()
     print(*traverse)
 
