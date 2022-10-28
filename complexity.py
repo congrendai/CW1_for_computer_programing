@@ -71,7 +71,7 @@ if __name__ == '__main__':
     # average_time_spent_by_list[0] = 5 * c + b => 2 * average_time_spent_by_list[0] = 10 * c + 2b
     # average_time_spent_by_list[1] = 10 * c + b
     b = 2 * average_time_spent_by_list[0] - average_time_spent_by_list[1]
-    c = (average_time_spent_by_list[1] - b) / 10
+    c = (average_time_spent_by_list[1] - b) / equally_spaced_numbers[1]
     
     # Calculate the estimated time spent by Linked List
     estimate_time_for_linear_relationship = []
@@ -129,22 +129,31 @@ if __name__ == '__main__':
     For a better comparison, I put these two graph into one that is shared with y-axis. 
     The graph shows that the time of searching values by a BST approaches a logarithmic time, 
     while that of the Linked List approaches a positive linear time (as the size increases, the 
-    search time increases as well). Additionally, the time spent on searching values of a BST is 
-    way less than that of a Linked List if the size of BST and Linked List increases. 
+    search time increases as well). Additionally, the average time spent on searching values of 
+    a BST is way less than that of a Linked List if the size of BST and Linked List increases to 
+    a quiet large number, say, 1000. 
 
-    ----------------------------------------------------------------------------------------------
+    -----------------------------------------------------------------------------------------------
 
     Complexity analysis X vs Y, Y2, and Y3
 
-    The graph shows that the time of searching values by a BST and estimated time that approaches 
-    a linear time and a logarithmic time. 
+    The graph shows that the time of searching values by a BST and estimated time for a linear time 
+    and a logarithmic time, which fits well with the estimated logarithmic time, based on the initial
+    graph. However, the real averaged time spent by BST is not exacly the same as the estimated one.
+    This happens may because the BSTs are not balanced where the line does not fit the estimated one.
+    If all the BSTs with random numbers that are balanced, it might fit the estimated one precisely.
+    Although they are not the same, the real time spent on searching by BSTs approaches the estimated 
+    one, which means that the implementation of BST is quiet good.
 
-    ----------------------------------------------------------------------------------------------
+    -----------------------------------------------------------------------------------------------
 
     Complexity analysis X vs Y, Y2, Y3, and Y4
 
     The estimated graph fits the average time spent by BST and Linked list for searching values well, 
     in most scenarios (I ran several times to see how the graphs change), which means I did not bad 
-    for implementing BST and Linked List due to what shows on the graph. If I have more time, I think 
-    I would make the BSTs and Linked List classes more efficient by improving the search() function.
+    for implementing BST and Linked List due to what shows on the graph. However, the average time 
+    spent on searching values by Linked List sometimes fail to fit the estimated one. This is happens 
+    might because the two times selected to calculate "c" and "b" are too close to each other, which 
+    makes the estimated time line sentisive in terms of the c. If I select two times that are far 
+    from each other, the estimated one might be more precise.
     '''
