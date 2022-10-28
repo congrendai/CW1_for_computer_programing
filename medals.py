@@ -9,7 +9,7 @@ class CountryMedals():
         self.bronze = bronze
         self.total = total
 
-    # Return JSON format string
+    # Return JSON format of the object
     def to_json(self):
         return json.dumps(self.__dict__)
 

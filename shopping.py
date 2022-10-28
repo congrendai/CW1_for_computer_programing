@@ -10,7 +10,8 @@ class Product():
         self.quantity = quantity
         self.unique_identifier = unique_identifier
         self.brand = brand
-       
+    
+    # Return JSON format of the object
     def to_json(self):
         return json.dumps(self.__dict__)
 
@@ -49,8 +50,8 @@ class ShoppingCart():
     def change_product_quantity(self, product, quantity):
         product.quantity = quantity
 
-# This methods collect and check inputs
-# Then, return a product with values
+# This method uses to get attributes values and varifiy the values for products
+# Then, return a product with attributes
 def get_value(product):
     for key in vars(product).keys():
 
@@ -97,7 +98,7 @@ def get_value(product):
                 # Check whether the EAN code is a digit sequence
                 except: print("EAN code should be a digit sequence")
 
-        # Get expiry_date
+        # Get expiry date and model with the format of "dd/mm/yyyy"
         # This checks whether the expiry date is older the today
         # and checks whether the format of date is valid
         elif key == "expiry_date":
@@ -115,8 +116,8 @@ def get_value(product):
                     else: print("Don't cling to the past!")
                 except: print("The date format is wrong.")
         
-        # Get gluten_free and suitable_for_vegans
-        # Check the food is gluten free and suitable for vegans
+        # Get gluten_free and suitable_for_vegans with the format of "Y" or "N"
+        # Check the food is gluten free and suitable for vegans or not
         elif key == "gluten_free" or key == "suitable_for_vegans": 
             while True:
                 temp = " ".join(key.split("_"))
@@ -130,7 +131,8 @@ def get_value(product):
                 else: print("Please enter Y or N.")         
             setattr(product, key, value)
         else:
-            # Check whether the input is empty for common attributes of products
+            # Check whether the input is empty for common attributes of products 
+            # such as name, brand, size and material
             while True:
                 value = input("Insert its {}: ".format(key))
                 if value:
@@ -144,20 +146,21 @@ def check_cart(shopping_cart):
     if shopping_cart: return shopping_cart
     else: print("The cart is empty.")
 
-# This method uses to print common attributes of products
+# This method uses to print common attributes of products 
+# such as name, price, quantity, unique_identifier and brand
 def basic_summary(dict):
     return "   {} - {} * {} = £{} \n      The EAN code is {}.".format(entry_num, dict["quantity"], dict["name"], dict["quantity"]*dict["price"], dict["unique_identifier"]), dict["quantity"]*dict["price"]
     
 if __name__ == '__main__':
 
-    # Register for classes
+    # Register for classes of products
     types = {
         "clothing": Clothing(), 
         "food": Food(),
         "phone": Phone()
     }
 
-    # Create a instance of the ShoppingCart
+    # Create a instance of the ShoppingCart class
     shopping_cart = ShoppingCart()
     EAN_code = set()
 
@@ -165,14 +168,14 @@ if __name__ == '__main__':
     print('The program has started.')
     print('Insert your next command (H for help):')
 
-    # Flag to stop the loop
+    # Flag to stop the loop of the program
     terminated = False
 
-    # Start looping
+    # Start looping the program
     while not terminated:
         c = input("Type your next command: ").lower()
 
-        # This is for adding products
+        # This is for adding products to the cart
         if c == "a":
             type_input = input("Insert its type: ").lower()
             # Check whether clothing,food,phoen are correctly entered, case-insensitive
@@ -183,7 +186,7 @@ if __name__ == '__main__':
                         shopping_cart.add_product(get_value(value))
             else: print("Please enter {}.".format(", ".join(types.keys())))
 
-        # This is for deleting product by EAN code
+        # This is for deleting product by EAN code from the cart
         elif c == "r":
             cart = check_cart(shopping_cart.get_contents())
             if cart:
@@ -232,7 +235,7 @@ if __name__ == '__main__':
                         total += total_temp
                 print("   Total = £{}".format(total))
 
-        # This is for changing quantity of a product by EAN code
+        # This is for changing quantity of a product by EAN code in the cart
         elif c == "q":
             cart = check_cart(shopping_cart.get_contents())
             if cart:
@@ -250,7 +253,7 @@ if __name__ == '__main__':
                     shopping_cart.change_product_quantity(product, quantity)
                     print("The quantity changed to {}".format(quantity))
 
-        # This is for print cart to JSON format
+        # This is for print cart to JSON format 
         elif c == "e":
             cart = check_cart(shopping_cart.get_contents())
             if cart:

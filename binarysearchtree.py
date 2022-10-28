@@ -37,6 +37,7 @@ class TreeNode():
         return l
 
     # Referenced from https://stackoverflow.com/questions/62406562/how-to-print-a-binary-search-tree-in-python
+    # This method is used to print the tree
     def __repr__(self):
         lines = []
         if self.get_right_child():
@@ -127,7 +128,7 @@ class BinarySearchTree():
                 self.set_count(self.get_count() + 1)
             else: print("The BST has reached its size ({}).".format(self.__size))
     
-    # This method recursively insert nodes with specific values
+    # This method recursively inserts nodes with specific values
     # And duplicate values will be added to the left
     def insert_node(self, current_node, cargo):
         if cargo <= current_node.get_cargo():
@@ -228,16 +229,21 @@ class BinarySearchTree():
             return True
 
     # Referenced from https://github.com/pagekeytech/education/blob/master/BST/bst.py
+    # This method returns the tree value in order
     def traverse(self):
         if self.get_root(): return self.get_root().traverse([])
         else: return []
 
     # Referenced from https://stackoverflow.com/questions/62406562/how-to-print-a-binary-search-tree-in-python
+    # This method prints the tree in a tree-like graph
     def print_tree(self):
         print(self.__root)
 
 if __name__ == '__main__':
+    # Create a BST
     binary_search_tree = BinarySearchTree()
+
+    # Set the size of the BST
     binary_search_tree.set_size(100)
 
     # insert nodes

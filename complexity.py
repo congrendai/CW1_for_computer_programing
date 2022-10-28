@@ -23,15 +23,16 @@ def divide_lists(list, step):
         yield list[i:i + step]
 
 if __name__ == '__main__':
-    binary_search_tree = BinarySearchTree()
-
+    # Generate a list of equally spaced numbers from 5 to 100
     equally_spaced_numbers = [i for i in range(5,105,5)]
     time_spent_by_tree = []
     time_spent_by_list = []    
+
+    number_tree = 1000
     
     # Store the average time spent by list
     for number in equally_spaced_numbers:
-        for i in range(1000):
+        for i in range(number_tree):
             binary_search_tree, linked_list = random_tree_list(number)
 
             # Search 42 by the binary search tree
@@ -46,12 +47,14 @@ if __name__ == '__main__':
             elapsed_time_for_list = time.time() - start_time_for_list
             time_spent_by_list.append(elapsed_time_for_list)
 
-    temp_tree = divide_lists(time_spent_by_tree, 1000)
+    # Calculate the average time spent by BST
+    temp_tree = divide_lists(time_spent_by_tree, number_tree)
     average_time_spent_by_tree = []
     for t in temp_tree:
         average_time_spent_by_tree.append(sum(t) / len(t))
 
-    temp_list = divide_lists(time_spent_by_list, 1000)
+    # Calculate the average time spent by Linked List
+    temp_list = divide_lists(time_spent_by_list, number_tree)
     average_time_spent_by_list = []
     for t in temp_list:
         average_time_spent_by_list.append(sum(t) / len(t))
