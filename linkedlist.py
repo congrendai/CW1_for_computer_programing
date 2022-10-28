@@ -19,7 +19,7 @@ class Node:
         self.__next = node
 
 class LinkedList:
-    def __init__(self) -> None:
+    def __init__(self):
         self.__head = Node()
         self.__length = 0
         self.__size = 0
@@ -68,7 +68,7 @@ class LinkedList:
     # This piece of code is referenced from https://www.geeksforgeeks.org/linked-list-set-3-deleting-node/
     # This method deletes the first occurrence of the value from the list
     def delete(self, cargo):
-        if self.get_length() == 0: print("The linked list is empty")
+        if self.get_length() == 0: print("The linked list is empty.")
         else:
             temp = self.get_head()
             if temp != None:
@@ -77,22 +77,19 @@ class LinkedList:
                     self.set_length(self.get_length() - 1)
                     if temp.get_next() != None: self.set_head(temp.get_next())
                     else: print("The linked list is empty now.")
-    
             while temp != None:
                 if temp.get_cargo() == cargo:
                     break
                 prev = temp
                 temp = temp.get_next()
-    
             if temp == None: return
-
             prev.set_next(temp.get_next())
             self.set_length(self.get_length() - 1)
 
     # This piece of code is referenced from https://www.geeksforgeeks.org/search-an-element-in-a-linked-list-iterative-and-recursive/
     # It can search for a given value
     def search(self, cargo):
-        if self.get_length() == 0: print("The linked list is empty")
+        if self.get_length() == 0: print("The linked list is empty.")
         else:
             temp = self.get_head()
             while temp != None:
@@ -101,16 +98,21 @@ class LinkedList:
             return False
 
 if __name__ == '__main__':
+    # Initialisation of a Linked List and set the size to 5
     linked_list = LinkedList()
     linked_list.set_size(5)
+
+    # Insert values to the Linked List
     linked_list.insert(1)
     linked_list.insert(6)
     linked_list.insert(3)
     linked_list.insert(4)
     linked_list.insert(5)
 
+    # Delete some values
     linked_list.delete(1)
     linked_list.delete(4)
 
+    # Search value and traverse the link
     print(linked_list.search(4))
     print(linked_list.traverse())

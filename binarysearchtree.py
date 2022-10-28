@@ -1,5 +1,4 @@
 # Some ideas of implementing Binary Search Trss are from https://gist.github.com/jakemmarsh/8273963
-
 class TreeNode():
     def __init__(self, cargo = None):
         self.__cargo = cargo
@@ -48,17 +47,21 @@ class BinarySearchTree():
     def set_size(self, value):
         self.__size = value
 
+    # This method checks whether BST is empty
     def is_empty(self):
         if self.__count == 0: return True
         else: return False
 
+    # This method checks whether BST is full
     def is_full(self):
         if self.__count == self.__size: return True
         else: False
 
+    # This method is used for searching values
     def search(self, cargo):
         return self.search_node(self.__root, cargo)
 
+    # This method recursively searches nodes that whether have specific values
     def search_node(self, current_node, cargo):
         if(current_node is None):
             return False
@@ -69,6 +72,8 @@ class BinarySearchTree():
         else:
             return self.search_node(current_node.get_right_child(), cargo)
 
+    # This method checks whether the BSt has root and 
+    # whether reaches the size limit, before inserting nodes
     def insert(self, cargo):
         if(self.get_root() is None):
             self.set_root(cargo)
@@ -78,9 +83,10 @@ class BinarySearchTree():
                 self.insert_node(self.__root, cargo)
                 self.set_count(self.get_count() + 1)
             else: print("The BST has reached its size ({}).".format(self.__size))
-
+    
+    # This method recursively insert nodes with specific values
+    # And duplicate values will be added to the left
     def insert_node(self, current_node, cargo):
-        # Duplicate values will be added to the left
         if cargo <= current_node.get_cargo():
             if current_node.get_left_child():
                 self.insert_node(current_node.get_left_child(), cargo)
@@ -110,3 +116,4 @@ if __name__ == '__main__':
     binary_search_tree.insert(30)
     binary_search_tree.insert(12)
     binary_search_tree.insert(22)
+    print(binary_search_tree.search(20))

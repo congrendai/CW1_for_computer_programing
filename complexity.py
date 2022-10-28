@@ -1,4 +1,5 @@
 import time
+import math
 from random import randint
 import matplotlib.pyplot as plt
 from linkedlist import LinkedList
@@ -21,10 +22,7 @@ if __name__ == '__main__':
 
     equally_spaced_numbers = [i for i in range(5,1005,5)]
     average_time_spent_by_tree = []
-    average_time_spent_by_list = []
-
-    estimate_time_for_tree = []
-    estimate_time_for_list = []
+    average_time_spent_by_list = []    
     
     # Store the average time spent by list
     for number in equally_spaced_numbers:
@@ -41,11 +39,32 @@ if __name__ == '__main__':
         linked_list.search(42)
         elapsed_time_for_list = time.time() - start_time_for_list
         average_time_spent_by_list.append(elapsed_time_for_list)
+
+    
+    # Calculate c and b for a linear relationship
+    # average_time_spent_by_list[0] = 5 * c + b
+    # average_time_spent_by_list[9] = 10 * c + b
+    c = (average_time_spent_by_list[9] - average_time_spent_by_list[0]) / 45
+    b = average_time_spent_by_list[0] - 45 * c
+    estimate_time_for_linear_relationship = []
+    for number in equally_spaced_numbers:
+        estimate_time_for_linear_relationship.append((number * c + b))
+
+    
+    # Calculate c and b for a logarithmic relationship
+    # t = clog(n)+b
+    # average_time_spent_by_tree[0] = c * math.log2(5) + b
+    # average_time_spent_by_tree[9] = c * math.log2(50) + b
+    c = (average_time_spent_by_tree[9] - average_time_spent_by_tree[0]) / (math.log2(50) - math.log2(5))
+    b = average_time_spent_by_tree[0] - c * math.log2(5)
+    estimate_time_for_logarithmic_relationship = []
+    for number in equally_spaced_numbers:
+        estimate_time_for_logarithmic_relationship.append((math.log2(number) * c + b))
         
 
     # Plot equally spaced size of BSTs and Linked Lists vs average time spent by them
     fig, axs = plt.subplots(1, 2, sharey = True)
-    fig.suptitle('Equally Spaced Size Numbers VS Average Time Spents')
+    fig.suptitle('Equally Spaced Size Numbers VS Average Time Spent')
     axs[0].plot(equally_spaced_numbers, average_time_spent_by_tree)
     axs[0].set_title("BST")
     axs[0].set_xlabel("Size of tree")
@@ -56,7 +75,7 @@ if __name__ == '__main__':
     plt.show()
 
     '''
-    Complexity analysis equally spaced size of BSTs and Linked Lists vs average time spent by them
+    Complexity analysis X vs Y
 
     For a better comparison, I change the size n to 5 - 1000 spaced by 5, and put 
     these two graph into one that is shared with y-axis. The graph shows that the 
@@ -67,4 +86,20 @@ if __name__ == '__main__':
     a BST is way less than that of a Linked List.
     '''
 
+    # Plot equally spaced size of BST and Linked List with average time spend, estimate time for linear and logarithmic relationship
+    plt.plot(equally_spaced_numbers, average_time_spent_by_tree)
+    plt.plot(equally_spaced_numbers, average_time_spent_by_list)
+    plt.plot(equally_spaced_numbers, estimate_time_for_linear_relationship)
+    plt.plot(equally_spaced_numbers, estimate_time_for_logarithmic_relationship)
+    plt.legend(["BST", "Linked List", "Linear", "Logarithmic"])
+    plt.xlabel('Size')
+    plt.ylabel('Search time')
+    plt.ticklabel_format(axis='both', style='sci', scilimits=(0,0))
+    plt.show()
 
+
+    '''
+    Complexity analysis X vs Y, Y2 and Y3
+
+    
+    '''
