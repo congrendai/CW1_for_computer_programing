@@ -185,7 +185,7 @@ if __name__ == '__main__':
                     if type_input == key:
                         product = value
                         shopping_cart.add_product(get_value(value))
-                        print("The () has been added to the cart.".format(product.name))
+                        print("The {} has been added to the cart.".format(product.name))
             else: print("Please enter {}.".format(", ".join(types.keys())))
 
         # This is for deleting product by EAN code from the cart
@@ -198,7 +198,7 @@ if __name__ == '__main__':
                         for product in cart:
                             if vars(product)["unique_identifier"] == EAN:
                                 shopping_cart.remove_product(product)
-                                print("This product has been removed from the cart.")
+                                print("The {} has been removed from the cart.".format(product.name))
                                 EAN_code.remove(EAN)
                                 break
                         break
