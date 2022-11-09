@@ -1,6 +1,5 @@
 # Some ideas of implementing Binary Search Trss are from https://gist.github.com/jakemmarsh/8273963, 
 # including search(), search_node(), insert(), insert_node()
-from requests import delete
 
 
 class TreeNode():
